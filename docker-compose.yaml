@@ -24,12 +24,21 @@ services:
   open-webui:
 
     build:
-      context: ./open-webui
+      context: .
+      dockerfile: Dockerfile
       args:
         - USE_CUDA=true
         - USE_CUDA_VER=cu121
+
        
-    container_name: open-webui-custom 
+    container_name: gaz-assistant
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     depends_on:
       - ollama
     ports:
@@ -37,7 +46,7 @@ services:
     environment:
       - 'OLLAMA_BASE_URL=http://ollama:11434'
     volumes:
-      # Сохраняем данные RAG в папку ./webui-data
+  
       - ./webui-data:/app/backend/data
     networks:
       - local-ai-net
