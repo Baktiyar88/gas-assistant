@@ -25,6 +25,10 @@ services:
 
     build:
       context: ./open-webui
+      args:
+        - USE_CUDA=true
+        - USE_CUDA_VER=cu121
+        - USE_EMBEDDING_MODEL=intfloat/multilingual-e5-large
     container_name: open-webui-custom 
     depends_on:
       - ollama
